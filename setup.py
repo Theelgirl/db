@@ -1,5 +1,5 @@
-name = 'newtdb3'
-version = '0.9.4'
+name = 'newtdb4'
+version = '0.9.5'
 
 install_requires = [
     'ZODB <=5.6',
