@@ -8,7 +8,7 @@ from ._util import trigger_exists
 class Adapter(relstorage.adapters.postgresql.PostgreSQLAdapter):
 
     def __init__(self, *args, **kw):
-        self.options = kwargs.pop('options')
+        self.options = kw.pop('options')
         driver = relstorage.adapters.postgresql.drivers.psycopg2.Psycopg2Driver()
         self.schema = SchemaInstaller(
             connmanager=self.connmanager,
