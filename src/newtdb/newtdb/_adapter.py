@@ -10,7 +10,7 @@ class Adapter(relstorage.adapters.postgresql.PostgreSQLAdapter):
     def __init__(self, *args, **kw):
         super(Adapter, self).__init__(*args, **kw)
 
-        driver = relstorage.adapters.postgresql.driver('psycopg2')
+        driver = relstorage.adapters.postgresql.drivers.Psycopg2Driver()
         self.schema = SchemaInstaller(
             connmanager=self.connmanager,
             runner=self.runner,
