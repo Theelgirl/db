@@ -1,4 +1,4 @@
-name = 'newtdb'
+name = 'newtdb2'
 version = '0.9.3'
 
 install_requires = [
