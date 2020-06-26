@@ -1,10 +1,10 @@
-name = 'newt.db'
-version = '0.9.1.dev0'
+name = 'newtdb'
+version = '0.9.2'
 
 install_requires = [
-    'ZODB <5.4',
+    'ZODB <=5.6',
     'setuptools',
-    'RelStorage[postgresql] >=2',
+    'RelStorage[postgresql] >=3',
     'six']
 extras_require = dict(test=['manuel', 'mock', 'zope.testing', 'zc.zlibstorage'])
 
