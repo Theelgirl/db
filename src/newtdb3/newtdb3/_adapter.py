@@ -8,21 +8,20 @@ from ._util import trigger_exists
 class Adapter(relstorage.adapters.postgresql.PostgreSQLAdapter):
 
     def __init__(self, *args, **kw):
-        super(Adapter, self).__init__(*args, **kw)
-
+        self.options = kwargs.pop('options')
         driver = relstorage.adapters.postgresql.drivers.psycopg2.Psycopg2Driver()
         self.schema = SchemaInstaller(
             connmanager=self.connmanager,
             runner=self.runner,
             locker=self.locker,
-            keep_history=self.keep_history,
+            keep_history=self.options.keep_history
         )
         self.mover = Mover(
             database_type='postgresql',
             options=self.options,
             runner=self.runner,
             version_detector=self.version_detector,
-            Binary=driver.Binary,
+            Binary=driver.Binary
         )
         self.connmanager.set_on_store_opened(self.mover.on_store_opened)
 
@@ -30,6 +29,7 @@ class Adapter(relstorage.adapters.postgresql.PostgreSQLAdapter):
             transform=getattr(self.options, 'transform', None))
         self.mover.auxiliary_tables = getattr(self.options,
                                               'auxiliary_tables', ())
+        super(Adapter, self).__init__(*args, **kw)
 
 class Mover(relstorage.adapters.postgresql.mover.PostgreSQLObjectMover):
 
