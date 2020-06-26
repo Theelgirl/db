@@ -1,4 +1,4 @@
-name = 'newtdb'
+name = 'newt.newtdb'
 version = '0.9.2'
 
 install_requires = [
