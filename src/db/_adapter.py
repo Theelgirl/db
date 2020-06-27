@@ -8,20 +8,20 @@ from ._util import trigger_exists
 class Adapter(relstorage.adapters.postgresql.PostgreSQLAdapter):
 
     def __init__(self, *args, **kw):
-        self.options = kw.pop('options')
-        driver = relstorage.adapters.postgresql.drivers.psycopg2.Psycopg2Driver()
+        super(Adapter, self).__init__(*args, **kw)
+
+        driver = relstorage.adapters.postgresql.drivers.psycopg2
         self.schema = SchemaInstaller(
             connmanager=self.connmanager,
             runner=self.runner,
             locker=self.locker,
-            keep_history=self.options.keep_history
+            options=self.options,
         )
         self.mover = Mover(
-            database_type='postgresql',
+            database_driver=driver,
             options=self.options,
             runner=self.runner,
             version_detector=self.version_detector,
-            Binary=driver.Binary
         )
         self.connmanager.set_on_store_opened(self.mover.on_store_opened)
 
@@ -29,7 +29,6 @@ class Adapter(relstorage.adapters.postgresql.PostgreSQLAdapter):
             transform=getattr(self.options, 'transform', None))
         self.mover.auxiliary_tables = getattr(self.options,
                                               'auxiliary_tables', ())
-        super(Adapter, self).__init__(*args, **kw)
 
 class Mover(relstorage.adapters.postgresql.mover.PostgreSQLObjectMover):
 
@@ -77,8 +76,7 @@ class Mover(relstorage.adapters.postgresql.mover.PostgreSQLObjectMover):
 
     _update_aux_sql = """
     DELETE FROM %(name)s WHERE zoid IN (SELECT zoid FROM temp_store);
-    INSERT INTO %(name)s (zoid)
-    SELECT zoid FROM temp_store join newt using (zoid);
+    INSERT INTO %(name)s (zoid)         SELECT zoid FROM temp_store ;
     """
 
     def move_from_temp(self, cursor, tid, txn_has_blobs):

@@ -1,5 +1,5 @@
-name = 'newtdb5'
-version = '0.9.5'
+name = 'newt.db'
+version = '0.9.0'
 
 install_requires = [
     'ZODB <=5.6',
